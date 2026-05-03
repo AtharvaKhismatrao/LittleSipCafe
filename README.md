@@ -60,6 +60,35 @@ Open **http://localhost:5173**. The Vite dev server proxies API calls to port `5
 
 For production, set `VITE_API_URL` in `frontend/.env` to your API origin (e.g. `https://api.example.com`).
 
+## Vercel deployment
+
+This repository is now set up for a single Vercel deployment with the frontend and API together.
+
+### Database
+
+Use MongoDB Atlas for the database. Vercel does not host MongoDB itself.
+
+### Environment variables on Vercel
+
+- `MONGODB_URI` - your Atlas connection string
+- `JWT_SECRET` - a long random secret
+- `VITE_API_URL` - leave empty to use the same-domain `/api` path
+
+### Deployment steps
+
+1. Import the GitHub repo into Vercel.
+2. Set the project root to the repository root.
+3. Use build command `npm run build`.
+4. Set the output directory to `frontend/dist`.
+5. Add the environment variables above.
+6. Deploy.
+
+### Notes
+
+- The Vercel API lives in the `api/` folder.
+- The old Express server in `backend/server.js` is still useful for local development, but Vercel will use the serverless API instead.
+- Menu items now use image URLs. Local file uploads are not part of the Vercel version.
+
 ## API routes (as implemented)
 
 | Method | Path | Notes |

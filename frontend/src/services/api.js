@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || '';
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = axios.create({
   baseURL,
@@ -73,20 +73,12 @@ export async function fetchAdminOrders() {
 }
 
 export async function createMenuItem(payload) {
-  let config = {};
-  if (payload instanceof FormData) {
-    config = { headers: { 'Content-Type': 'multipart/form-data' } };
-  }
-  const { data } = await api.post('/menu', payload, config);
+  const { data } = await api.post('/menu', payload);
   return data;
 }
 
 export async function updateMenuItem(id, payload) {
-  let config = {};
-  if (payload instanceof FormData) {
-    config = { headers: { 'Content-Type': 'multipart/form-data' } };
-  }
-  const { data } = await api.put(`/menu/${id}`, payload, config);
+  const { data } = await api.put(`/menu/${id}`, payload);
   return data;
 }
 

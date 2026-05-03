@@ -34,7 +34,6 @@ export default function AdminDashboard() {
     price: '',
     description: '',
     image: '',
-    imageFile: null,
   });
 
   useEffect(() => {
@@ -105,7 +104,6 @@ export default function AdminDashboard() {
       price: '',
       description: '',
       image: '',
-      imageFile: null,
     });
   }
 
@@ -117,23 +115,19 @@ export default function AdminDashboard() {
       price: String(item.price),
       description: item.description || '',
       image: item.image || '',
-      imageFile: null,
     });
   }
 
   async function saveMenu(e) {
     e.preventDefault();
     try {
-      const payload = new FormData();
-      payload.append('name', form.name);
-      payload.append('category', form.category);
-      payload.append('price', Number(form.price));
-      payload.append('description', form.description);
-      if (form.imageFile) {
-        payload.append('image', form.imageFile);
-      } else if (form.image) {
-        payload.append('image', form.image);
-      }
+      const payload = {
+        name: form.name,
+        category: form.category,
+        price: Number(form.price),
+        description: form.description,
+        image: form.image,
+      };
       if (editing === 'new') {
         await createMenuItem(payload);
       } else {
@@ -290,16 +284,16 @@ export default function AdminDashboard() {
                 />
               </label>
               <label className="block sm:col-span-2">
-                <span className="text-sm font-medium">Image Upload</span>
+                <span className="text-sm font-medium">Image URL</span>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setForm((f) => ({ ...f, imageFile: e.target.files[0] }))}
+                  value={form.image}
+                  onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
+                  placeholder="https://..."
                   className="mt-1 w-full rounded-xl border border-stone-200 px-3 py-2"
                 />
-                {form.image && !form.imageFile && (
-                  <p className="mt-1 text-xs text-stone-500">Current image kept if unchanged.</p>
-                )}
+                <p className="mt-1 text-xs text-stone-500">
+                  Use a hosted image URL. Vercel serverless functions do not keep local uploads.
+                </p>
               </label>
               <label className="block sm:col-span-2">
                 <span className="text-sm font-medium">Description</span>
